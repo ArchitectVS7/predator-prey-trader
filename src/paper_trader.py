@@ -133,9 +133,13 @@ class PaperTrader:
         if not closed:
             return {
                 "total_trades": 0,
+                "wins": 0,
+                "losses": 0,
                 "win_rate": 0,
-                "avg_profit": 0,
-                "total_profit": 0
+                "avg_profit_pct": 0,
+                "total_profit_pct": 0,
+                "best_trade": 0,
+                "worst_trade": 0
             }
         
         wins = [t for t in closed if t.status == "WON"]
