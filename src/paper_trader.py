@@ -153,10 +153,6 @@ class PaperTrader:
             "worst_trade": min((t.profit_loss_pct or 0 for t in closed), default=0)
         }
     
-    def get_trades_by_pattern(self, pattern: str) -> List[PaperTrade]:
-        """Get trades filtered by pattern type"""
-        return [t for t in self.trades if t.pattern_detected == pattern]
-    
     def close_trade_manually(self, trade_id: str, exit_price: float, reason: str = "MANUAL"):
         """Manually close a trade"""
         trade = next((t for t in self.trades if t.id == trade_id), None)
