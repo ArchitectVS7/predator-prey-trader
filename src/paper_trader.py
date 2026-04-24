@@ -29,6 +29,20 @@ class PaperTrade:
     profit_loss: Optional[float] = None
     profit_loss_pct: Optional[float] = None
     
+    def close(self, exit_price: float, status: str) -> None:
+        """Close the trade and calculate profit/loss"""
+        self.status = status
+        self.exit_price = exit_price
+        self.exit_timestamp = datetime.now().isoformat()
+
+        if self.action == "BUY":
+            self.profit_loss = exit_price - self.entry_price
+        elif self.action == "SHORT":
+            self.profit_loss = self.entry_price - exit_price
+
+        if self.entry_price > 0 and self.profit_loss is not None:
+            self.profit_loss_pct = (self.profit_loss / self.entry_price) * 100
+
     def to_dict(self) -> Dict:
         return asdict(self)
 
@@ -87,33 +101,15 @@ class PaperTrader:
         # Check if stop loss or take profit hit
         if trade.action == "BUY":
             if trade.stop_loss and current_price <= trade.stop_loss:
-                trade.status = "STOPPED"
-                trade.exit_price = trade.stop_loss
-                trade.exit_timestamp = datetime.now().isoformat()
-                trade.profit_loss = trade.stop_loss - trade.entry_price
-                trade.profit_loss_pct = (trade.profit_loss / trade.entry_price) * 100
-                
+                trade.close(trade.stop_loss, "STOPPED")
             elif trade.take_profit and current_price >= trade.take_profit:
-                trade.status = "WON"
-                trade.exit_price = trade.take_profit
-                trade.exit_timestamp = datetime.now().isoformat()
-                trade.profit_loss = trade.take_profit - trade.entry_price
-                trade.profit_loss_pct = (trade.profit_loss / trade.entry_price) * 100
+                trade.close(trade.take_profit, "WON")
         
         elif trade.action == "SHORT":
             if trade.stop_loss and current_price >= trade.stop_loss:
-                trade.status = "STOPPED"
-                trade.exit_price = trade.stop_loss
-                trade.exit_timestamp = datetime.now().isoformat()
-                trade.profit_loss = trade.entry_price - trade.stop_loss
-                trade.profit_loss_pct = (trade.profit_loss / trade.entry_price) * 100
-                
+                trade.close(trade.stop_loss, "STOPPED")
             elif trade.take_profit and current_price <= trade.take_profit:
-                trade.status = "WON"
-                trade.exit_price = trade.take_profit
-                trade.exit_timestamp = datetime.now().isoformat()
-                trade.profit_loss = trade.entry_price - trade.take_profit
-                trade.profit_loss_pct = (trade.profit_loss / trade.entry_price) * 100
+                trade.close(trade.take_profit, "WON")
         
         self.save_trades()
         return trade
@@ -167,18 +163,8 @@ class PaperTrader:
         
         if not trade or trade.status != "OPEN":
             return None
-        
-        trade.status = reason
-        trade.exit_price = exit_price
-        trade.exit_timestamp = datetime.now().isoformat()
-        
-        if trade.action == "BUY":
-            trade.profit_loss = exit_price - trade.entry_price
-        elif trade.action == "SHORT":
-            trade.profit_loss = trade.entry_price - exit_price
-        
-        if trade.entry_price > 0:
-            trade.profit_loss_pct = (trade.profit_loss / trade.entry_price) * 100
+
+        trade.close(exit_price, reason)
         
         self.save_trades()
         return trade
