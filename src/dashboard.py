@@ -173,15 +173,15 @@ class Dashboard:
         stats = self.trader.calculate_stats()
         
         print(f"📈 Statistics:")
-        print(f"  Total Trades: {stats['total_trades']}")
-        print(f"  Wins: {stats['wins']} | Losses: {stats['losses']}")
-        print(f"  Win Rate: {stats['win_rate']:.1f}%")
-        print(f"  Avg Profit: {stats['avg_profit_pct']:+.2f}%")
-        print(f"  Total Profit: {stats['total_profit_pct']:+.2f}%")
+        print(f"  Total Trades: {stats.get('total_trades', 0)}")
+        print(f"  Wins: {stats.get('wins', 0)} | Losses: {stats.get('losses', 0)}")
+        print(f"  Win Rate: {stats.get('win_rate', 0):.1f}%")
+        print(f"  Avg Profit: {stats.get('avg_profit_pct', 0):+.2f}%")
+        print(f"  Total Profit: {stats.get('total_profit_pct', 0):+.2f}%")
         
-        if stats['best_trade'] != 0:
-            print(f"  Best Trade: {stats['best_trade']:+.2f}%")
-            print(f"  Worst Trade: {stats['worst_trade']:+.2f}%")
+        if stats.get('best_trade', 0) != 0:
+            print(f"  Best Trade: {stats.get('best_trade', 0):+.2f}%")
+            print(f"  Worst Trade: {stats.get('worst_trade', 0):+.2f}%")
         
         # Show open trades
         open_trades = self.trader.get_open_trades()
