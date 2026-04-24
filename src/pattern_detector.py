@@ -4,10 +4,9 @@ Pattern Detector for Predator-Prey Trade Analyzer
 Detects manipulation patterns: pumps, whale accumulation, coordinated behavior
 """
 
-from typing import Dict, List, Tuple, Optional
-from datetime import datetime, timedelta
+from typing import Dict, List, Optional
+from datetime import datetime
 from dataclasses import dataclass
-import statistics
 
 
 @dataclass
