@@ -279,7 +279,7 @@ predator-prey-trader/
 │   └── dashboard.py         # CLI interface
 ├── data/
 │   └── paper_trades.json    # Paper trading history
-├── tests/                   # Unit tests (TODO)
+├── tests/                   # Unit tests
 ├── docs/                    # Documentation
 └── README.md
 ```
