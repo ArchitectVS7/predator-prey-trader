@@ -69,8 +69,8 @@ class DataFetcher:
                 "meta": result.get("meta", {})
             }
             
-        except Exception as e:
-            return {"error": str(e)}
+        except Exception:
+            return {"error": "Failed to fetch stock data"}
     
     def fetch_social_sentiment(self, symbol: str, subreddit: str = "wallstreetbets") -> Dict:
         """
@@ -129,8 +129,8 @@ class DataFetcher:
                 "mentions": mentions[:10]  # Top 10
             }
             
-        except Exception as e:
-            return {"error": str(e)}
+        except Exception:
+            return {"error": "Failed to fetch social sentiment"}
     
     def calculate_volume_profile(self, candles: List[Dict]) -> Dict:
         """Calculate volume profile metrics"""
@@ -270,8 +270,8 @@ class CryptoDataFetcher:
                 "current_price": candles[-1]["price"] if candles else 0
             }
             
-        except Exception as e:
-            return {"error": str(e)}
+        except Exception:
+            return {"error": "Failed to fetch crypto data"}
 
 
 if __name__ == "__main__":
