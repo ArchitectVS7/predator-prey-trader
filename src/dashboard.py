@@ -4,7 +4,6 @@ CLI Dashboard for Predator-Prey Trade Analyzer
 Shows real-time analysis, detections, and paper trading results
 """
 
-import sys
 import time
 from datetime import datetime
 from typing import List
